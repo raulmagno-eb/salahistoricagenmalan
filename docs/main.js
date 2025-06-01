@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import { DragControls } from 'DragControls';
 
-const IMAGES_LOCATION = "/Imagens"
-const METADATA_LOCATION = "/Metadados"
+// ✅ CORRIGIDO: Remover barras iniciais para funcionar no GitHub Pages
+const IMAGES_LOCATION = "./Imagens"
+const METADATA_LOCATION = "./Metadados"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -238,7 +239,7 @@ const createControll = () => {
     for (let target of currentInfo.targets) {
         const geom = new THREE.CircleGeometry(0.5, 70)
         let texture = new THREE.TextureLoader().load(
-            `arrow.png`
+            `./arrow.png` // ✅ CORRIGIDO: Caminho relativo
         );
         let material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
         material.transparent = true
@@ -768,7 +769,7 @@ const main = async () => {
     map.on('load', function () {
 
         map.loadImage(
-            '/point.png',
+            './point.png', // ✅ CORRIGIDO: Caminho relativo
             function (error, image) {
                 if (error) throw error;
                 map.addImage('point', image);
@@ -828,7 +829,7 @@ const main = async () => {
         );
 
         map.loadImage(
-            '/point-selected-v2.png',
+            './point-selected-v2.png', // ✅ CORRIGIDO: Caminho relativo
             function (error, image) {
                 map.addImage('point-selected', image);
                 map.addSource('selected', {
@@ -861,7 +862,7 @@ const main = async () => {
     miniMap2.on('load', function () {
 
         miniMap2.loadImage(
-            '/point.png',
+            './point.png', // ✅ CORRIGIDO: Caminho relativo
             function (error, image) {
                 if (error) throw error;
                 miniMap2.addImage('point', image);
@@ -900,7 +901,7 @@ const main = async () => {
         );
 
         miniMap2.loadImage(
-            '/point-selected-v2.png',
+            './point-selected-v2.png', // ✅ CORRIGIDO: Caminho relativo
             function (error, image) {
                 miniMap2.addImage('point-selected', image);
                 miniMap2.addSource('selected', {
