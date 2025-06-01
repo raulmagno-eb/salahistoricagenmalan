@@ -5,41 +5,151 @@
     <meta charset="utf-8" />
     <title>Street View</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src="lib/maplibre-gl.js"></script>
-    <link href="lib/maplibre-gl.css" rel="stylesheet" />
-    <link href="lib/google-icon.css" rel="stylesheet">
+    
+    <!-- MapLibre GL JS -->
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+    
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Turf.js -->
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- DragControls - Carregado após Three.js -->
+    <script>
+        // Aguarda o THREE carregar antes de carregar DragControls
+        window.addEventListener('load', function() {
+            const script = document.createElement('script');
+            script.src = 'https://threejs.org/examples/js/controls/DragControls.js';
+            script.onload = function() {
+                // DragControls agora está disponível como THREE.DragControls
+                console.log('DragControls carregado');
+            };
+            document.head.appendChild(script);
+        });
+    </script>
+    
+    <!-- CSS customizado -->
     <link type="text/css" rel="stylesheet" href="main.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: none;
+        }
+        
+        #mini-map {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 200px;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            z-index: 3;
+        }
+        
+        .floating-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 4;
+        }
+        
+        .floating-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .floating-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+        
+        .element-container {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .floating-container:hover .element-container {
+            display: flex;
+        }
+        
+        .float-element {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #28a745;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .float-element:hover {
+            background-color: #1e7e34;
+            transform: scale(1.1);
+        }
+        
+        .material-icons {
+            font-size: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <script src="lib/jquery-3.6.0.min.js"></script>
-    <script src="lib/turf.min.js"></script>
-    <!-- Import maps polyfill -->
-    <!-- Remove this when import maps will be widely supported -->
-    <script async src="lib/es-module-shims.js"></script>
-    <script type="text/javascript">
-        const module = {};
-        const setCurrentHoveElement = (name) => {
-            if (!module.setCurrentHoveElement) return
-            module.setCurrentHoveElement(name)
-        }
-    </script>
-
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "/build/three.module.js",
-                "OrbitControls": "/build/addons/controls/OrbitControls.js",
-                "DragControls": "/build/addons/controls/DragControls.js"
-            }
-        }
-    </script>
-
-    <script type="module" src="main.js"></script>
-
+    <!-- Containers principais -->
+    <div id="container" onmouseover="setCurrentHoveElement('street');"></div>
     <div id="map" onmouseover="setCurrentHoveElement('map');"></div>
     <div id="mini-map" onmouseover="setCurrentHoveElement('map');"></div>
-    <div id="container" onmouseover="setCurrentHoveElement('street');"></div>
+    
+    <!-- Interface flutuante -->
     <div class="floating-container">
         <div class="floating-button">+</div>
         <div class="element-container">
@@ -55,6 +165,26 @@
             </a>
         </div>
     </div>
+
+    <!-- Script principal -->
+    <script>
+        // Função global para compatibilidade
+        window.setCurrentHoveElement = function(name) {
+            if (window.streetViewApp && window.streetViewApp.setCurrentHoveElement) {
+                window.streetViewApp.setCurrentHoveElement(name);
+            }
+        };
+        
+        // Aguarda todas as dependências carregarem
+        window.addEventListener('load', function() {
+            // Pequeno delay para garantir que DragControls carregou
+            setTimeout(function() {
+                const script = document.createElement('script');
+                script.src = 'main.js';
+                document.head.appendChild(script);
+            }, 500);
+        });
+    </script>
 </body>
 
 </html>
