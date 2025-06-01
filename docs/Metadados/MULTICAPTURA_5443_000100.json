@@ -1,0 +1,37 @@
+{
+    "camera": {
+        "id": "MULTICAPTURA_5443_000100",
+        "img": "MULTICAPTURA_5443_000100",
+        "lon": -51.221133333333334,
+        "lat": -30.066972222222223,
+        "ele": 78.259,
+        "heading": 281.8051414580992
+    },
+    "targets": [
+        {
+            "id": "MULTICAPTURA_5443_000107",
+            "img": "MULTICAPTURA_5443_000107",
+            "lon": -51.22123888888889,
+            "lat": -30.067013888888887,
+            "ele": 78.345,
+            "icon": "next",
+            "next": true
+        },
+        {
+            "id": "MULTICAPTURA_5443_000094",
+            "img": "MULTICAPTURA_5443_000094",
+            "lon": -51.22105277777778,
+            "lat": -30.06705,
+            "ele": 78.635,
+            "icon": "next"
+        },
+        {
+            "id": "MULTICAPTURA_5443_001997",
+            "img": "MULTICAPTURA_5443_001997",
+            "lon": -51.22096944444445,
+            "lat": -30.06688611111111,
+            "ele": 80.137,
+            "icon": "next"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "camera": {
+        "id": "MULTICAPTURA_5443_000126",
+        "img": "MULTICAPTURA_5443_000126",
+        "lon": -51.22146666666667,
+        "lat": -30.067244444444444,
+        "ele": 83.026,
+        "heading": 223.0981280199661
+    },
+    "targets": [
+        {
+            "id": "MULTICAPTURA_5443_000130",
+            "img": "MULTICAPTURA_5443_000130",
+            "lon": -51.22154722222223,
+            "lat": -30.06731111111111,
+            "ele": 84.092,
+            "icon": "next",
+            "next": true
+        },
+        {
+            "id": "MULTICAPTURA_5443_000121",
+            "img": "MULTICAPTURA_5443_000121",
+            "lon": -51.221386111111116,
+            "lat": -30.067161111111112,
+            "ele": 80.715,
+            "icon": "next"
+        }
+    ]
+}
