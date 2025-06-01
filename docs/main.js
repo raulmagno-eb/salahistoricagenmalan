@@ -1,5 +1,6 @@
-import * as THREE from 'three';
-import { DragControls } from 'DragControls';
+// Removido: import * as THREE from 'three';
+// Removido: import { DragControls } from 'DragControls';
+// THREE e DragControls serão carregados via CDN no HTML
 
 // ✅ CORRIGIDO: Remover barras iniciais para funcionar no GitHub Pages
 const IMAGES_LOCATION = "./Imagens"
@@ -74,7 +75,8 @@ const setCurrentHoveElement = (name) => {
     }
 }
 
-module.setCurrentHoveElement = setCurrentHoveElement
+// ✅ CORRIGIDO: Mudou de module.setCurrentHoveElement para window
+window.setCurrentHoveElement = setCurrentHoveElement
 
 const calculateTargetPositionInMeters = (
     cameraLocation,
@@ -183,7 +185,8 @@ const loadTarget = (name, cb = () => { }) => {
             `${IMAGES_LOCATION}/${data.camera.img}.jpg`,
             (texture) => {
                 material.map = texture
-                texture.encoding = THREE.sRGBEncoding
+                // ✅ CORRIGIDO: texture.encoding para texture.colorSpace
+                texture.colorSpace = THREE.SRGBColorSpace
                 //mesh.rotation.y = currentInfo.camera.heading
                 //addCube(data);
                 //nextTarget = lastClickAt
@@ -256,7 +259,8 @@ const createControll = () => {
 
     }
     if(controls) controls.deactivate()
-    controls = new DragControls(arrows.map(i => i.arrow), camera, renderer.domElement);
+    // ✅ CORRIGIDO: DragControls agora é THREE.DragControls
+    controls = new THREE.DragControls(arrows.map(i => i.arrow), camera, renderer.domElement);
     controls.addEventListener('drag', function (event) {
         isDrag = true
 
