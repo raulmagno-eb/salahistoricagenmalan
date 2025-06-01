@@ -1,0 +1,21 @@
+{
+    "camera": {
+        "id": "MULTICAPTURA_0371_000021",
+        "img": "MULTICAPTURA_0371_000021",
+        "lon": -55.372594444444445,
+        "lat": -30.73149972222222,
+        "ele": 211.2,
+        "heading": 216.5387819236301
+    },
+    "targets": [
+        {
+            "id": "MULTICAPTURA_0371_000023",
+            "img": "MULTICAPTURA_0371_000023",
+            "lon": -55.37266388888889,
+            "lat": -30.731580277777777,
+            "ele": 210.3,
+            "icon": "next",
+            "next": true
+        }
+    ]
+}
